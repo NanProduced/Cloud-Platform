@@ -1,0 +1,50 @@
+server:
+  port: 8899
+spring:
+  application:
+    name: auth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.11:8849
+        service: auth-server
+        namespace: nan
+        group: DEFAULT_GROUP
+        register-enabled: true
+        # 类似长连接监听服务端信息变化的功能
+        watch:
+          enabled: true
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+  datasource:
+    username: root
+    password: mK7nLtTZwNxGpaZCUbMCabeIBCfbcAYM
+    url: jdbc:mysql://192.168.1.12:3307/cloud?zeroDateTimeBehavior=convertToNull&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+  redis:
+    database: 8
+    host: 192.168.1.12
+    port: 6379
+    password: 99b0d786b7d9620e7c0885e3d9fa7e6ed4bd109a8a9a3456289b63d61b375680
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 48
+        min-idle: 0
+        max-wait: 5s
+
+mybatis-plus:
+  # xml文件位置
+  mapper-locations: classpath:tech.nan.demo.mapper/*.xml
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+
+demo:
+  security:
+    jwt-alias: demo-jwt
+    jwt-key: Nan12091209
+  authority:
+    key: authority:list
