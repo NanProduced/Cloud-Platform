@@ -32,6 +32,12 @@ spring:
         max-idle: 48
         min-idle: 0
         max-wait: 5s
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://192.168.1.192:9411
+    discovery-client-enabled: false
 
 mybatis-plus:
   # xml文件位置
@@ -41,6 +47,8 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
 
 demo:
   security:

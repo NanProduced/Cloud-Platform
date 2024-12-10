@@ -21,7 +21,8 @@ public enum ExceptionEnum {
     OPERATION_NOT_SUPPORTED(1012, "operation not supported"),
 
     /* 参数校验 -> 4xxx */
-    USER_NAME_DUPLICATION_EXCEPTION(4001, "Username is duplication");
+    USER_NAME_DUPLICATION_EXCEPTION(4001, "Username is duplication"),
+    GROUP_HAS_SUB_GROUP(4002, "Group has sub group");
 
     private final Integer code;
     private final String message;
@@ -45,6 +46,12 @@ public enum ExceptionEnum {
     public void throwIf(boolean expr, Object... args) {
         if (expr) {
             throw throwThis(args);
+        }
+    }
+
+    public void throwIf(boolean expr) {
+        if (expr) {
+            throw throwThis(this.message);
         }
     }
 }

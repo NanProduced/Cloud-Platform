@@ -46,6 +46,12 @@ spring:
         max-idle: 48
         min-idle: 0
         max-wait: 5s
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
 
 demo:
   security:

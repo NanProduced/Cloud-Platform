@@ -22,6 +22,10 @@ public class UserRoleDO {
 
     private Integer authorities;
 
+    /**
+     * 0：系统角色
+     * 1：自定义角色
+     */
     private Integer type;
 
     @TableField("creator_id")

@@ -3,8 +3,8 @@ package tech.nan.demo.application.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.nan.demo.application.model.DTO.CreateOrgRequest;
-import tech.nan.demo.application.model.DTO.CreateOrgResponse;
+import tech.nan.demo.api.model.DTO.CreateOrgRequest;
+import tech.nan.demo.api.model.DTO.CreateOrgResponse;
 import tech.nan.demo.auth.client.UserClient;
 import tech.nan.demo.auth.client.dto.UserDTO;
 import tech.nan.demo.domain.group.Group;
@@ -31,7 +31,6 @@ public class OrgService {
 
     @Transactional
     public CreateOrgResponse createOrganization(CreateOrgRequest request) {
-        // todo：鉴权、校验
         Group rootGroup = Group.builder()
                 .groupName(request.getOrgName())
                 .description("organization root group")
@@ -66,7 +65,7 @@ public class OrgService {
         orgRepository.createOrganization(organization);
         return CreateOrgResponse.builder()
                 .orgName(request.getOrgName())
-                .managerName(request.getOrgName())
+                .managerName(request.getRootUserName())
                 .password(password)
                 .build();
     }

@@ -16,8 +16,18 @@ public interface GroupRepository {
 
     List<Group> getAllSubGroupById(Long groupId);
 
+    boolean ifHasSubGroup(Long groupId);
+
     Group getGroupByUserId(Long userId);
 
+    Long getGroupIdByUserId(Long userId);
+
     Group getGroupByTerminalId(Long terminalId);
+
+    void updateGroupById(Long groupId, String groupName, String description);
+
+    void deleteGroupById(Long groupId);
+
+    void deleteGroupAndSubGroupById(Long groupId);
 }
 

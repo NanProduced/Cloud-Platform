@@ -3,13 +3,12 @@ package tech.nan.demo.auth.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.core.serializer.support.SerializationFailedException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +46,10 @@ public class JsonUtils {
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
+    public static ObjectMapper getObjectMapper() {
+        return OBJECT_MAPPER;
+    }
+
     public static String toJson(Object obj) {
         if (Objects.isNull(obj)) {
             return "";
@@ -55,6 +58,25 @@ public class JsonUtils {
             return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new SerializationFailedException("serialize failed", e);
+        }
+    }
+
+    public static JsonNode fromJson(String json) {
+        Objects.requireNonNull(json, "MonitorJsonHandler 待解析的字符串为null");
+        try {
+            return OBJECT_MAPPER.readTree(json);
+        } catch (IOException e) {
+            throw new SerializationFailedException("MonitorJsonHandler serialization failed", e);
+        }
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        Objects.requireNonNull(json, "MonitorJsonHandler 待反序列化的字符串为null");
+        Objects.requireNonNull(clazz, "MonitorJsonHandler 待反序列化的类型为null");
+        try {
+            return OBJECT_MAPPER.readValue(json, clazz);
+        } catch (Exception e) {
+            throw new SerializationFailedException("MonitorJsonHandler serialization failed", e);
         }
     }
 }

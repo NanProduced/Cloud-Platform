@@ -12,7 +12,11 @@ import tech.nan.demo.auth.model.DO.AuthUrlDO;
 import tech.nan.demo.auth.model.DO.AuthorityDO;
 
 import java.util.List;
+import java.util.Set;
 
+/**
+ * 接口权限初始化
+ */
 @Component
 @Slf4j
 public class AuthorityInitRunner implements ApplicationRunner {
@@ -37,6 +41,13 @@ public class AuthorityInitRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        String pattern = "auth_url:*";
+        Set<String> keys = redisTemplate.keys(pattern);
+        if (keys != null && !keys.isEmpty()) {
+            // 清空权限缓存
+            redisTemplate.delete(keys);
+            log.info("Clear the auth url, count:{}", keys.size());
+        }
         List<AuthUrlDO> allAuthUrl = authUrlMapper.selectList(new LambdaQueryWrapper<>(AuthUrlDO.class).select(AuthUrlDO::getId, AuthUrlDO::getUrl, AuthUrlDO::getAuthorization));
         for (AuthUrlDO url : allAuthUrl) {
             redisTemplate.opsForValue().set(String.format(AUTH_URL_FORMAT, url.getUrl()), AUTH_PREFIX + url.getAuthorization());

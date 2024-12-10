@@ -1,7 +1,7 @@
 package tech.nan.demo.utils;
 
 import org.springframework.lang.NonNull;
-import tech.nan.demo.http.GenericInvocationContext;
+import tech.nan.demo.web.GenericInvocationContext;
 import tech.nan.demo.web.InvocationContextExtractInterceptor;
 
 /**
@@ -34,5 +34,15 @@ public class InvocationContextHolder {
     public static GenericInvocationContext createEmptyContext() {
         contextHolder.set(new GenericInvocationContext());
         return contextHolder.get();
+    }
+
+    @NonNull
+    public static Long getGroupId() {
+        return contextHolder.get().getRequestUser().getGroupId();
+    }
+
+    @NonNull
+    public static Long getCurrentUserId() {
+        return contextHolder.get().getRequestUser().getUserId();
     }
 }

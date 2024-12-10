@@ -13,12 +13,24 @@ import tech.nan.demo.utils.JsonUtils;
 public class BaseResponseAdvice implements ResponseBodyAdvice {
 
     @Override
-    public boolean supports(MethodParameter returnType, Class converterType) {
-        return true;
+    public boolean supports(MethodParameter methodParameter, Class converterType) {
+        // 对响应进行统一处理
+        // swagger2的响应不做处理
+        return !methodParameter.getDeclaringClass().getName().contains("springfox") &&
+                // @IgnoreDynamicResponse标注的方法不做处理
+                !methodParameter.hasMethodAnnotation(IgnoreDynamicResponse.class);
     }
 
     @Override
     public Object beforeBodyWrite(Object obj, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+
+        boolean isFeignInvocation = request.getHeaders().containsKey(CustomHttpHeaders.TRACE_ID);
+
+        // feign调用不封装
+        if (isFeignInvocation) {
+            return obj;
+        }
+
         // 已经包装过的响应不做处理
         if (obj instanceof DynamicResponse) {
             return obj;

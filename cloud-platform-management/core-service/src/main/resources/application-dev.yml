@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: ccloud-core-service
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   cloud:
     nacos:
       discovery:
@@ -41,3 +44,6 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+
+swagger:
+  enable: true
