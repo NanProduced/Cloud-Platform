@@ -35,4 +35,8 @@ public class GroupService {
         // other
         return allGroups;
     }
+
+    public Group getGroupById(Long groupId) {
+        return groupRepository.getGroupById(groupId);
+    }
 }

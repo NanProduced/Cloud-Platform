@@ -6,16 +6,21 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
+@TableName("user_rel")
 @Data
-@TableName("user_group_rel")
-public class UserGroupRelDO {
+public class UserRelDO {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "user_group_id")
-    private Long userGroupId;
+    @TableField("user_id")
+    private Long userId;
 
-    @TableField(value = "terminal_group_id")
-    private Long terminalGroupId;
+    @TableField("group_id")
+    private Long groupId;
+
+    @TableField("update_time")
+    private LocalDateTime updateTime;
 }

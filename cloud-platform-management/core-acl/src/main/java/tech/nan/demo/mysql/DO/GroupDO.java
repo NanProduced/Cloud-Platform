@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("terminal_group")
+@TableName("group")
 public class GroupDO {
 
     @TableId(value = "id", type = IdType.AUTO)

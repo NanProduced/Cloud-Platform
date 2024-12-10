@@ -33,6 +33,14 @@ public class UserPrincipal implements UserDetails {
 
     private List<? extends GrantedAuthority> authorities;
 
+    private Long groupId;
+
+    private String groupName;
+
+    private Long orgId;
+
+    private String orgName;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

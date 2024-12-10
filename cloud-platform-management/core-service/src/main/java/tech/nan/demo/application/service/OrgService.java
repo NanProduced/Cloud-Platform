@@ -8,8 +8,6 @@ import tech.nan.demo.auth.client.UserClient;
 import tech.nan.demo.auth.client.dto.UserDTO;
 import tech.nan.demo.domain.group.Group;
 import tech.nan.demo.domain.organization.Organization;
-import tech.nan.demo.domain.roles.SystemDefaultRoles;
-import tech.nan.demo.domain.user.User;
 import tech.nan.demo.repository.GroupRepository;
 import tech.nan.demo.repository.OrganizationRepository;
 import tech.nan.demo.utils.PasswordUtils;

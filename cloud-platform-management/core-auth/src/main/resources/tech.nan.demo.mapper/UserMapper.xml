@@ -2,8 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tech.nan.demo.auth.infrastructure.UserMapper">
 
+    <resultMap id="UserGroupMap" type="tech.nan.demo.auth.model.DO.GroupDO">
+        <id column="id" property="groupId" jdbcType="BIGINT"/>
+        <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="UserOrganization" type="tech.nan.demo.auth.model.DO.OrgDO">
+        <id column="id" property="orgId" jdbcType="BIGINT"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <insert id="insertUserRel" parameterType="tech.nan.demo.auth.model.DO.UserRelDO" useGeneratedKeys="true" keyProperty="id">
         insert into user_rel(group_id, user_id, update_time)
         values (#{userRel.groupId}, #{userRel.userId}, #{userRel.updateTime})
     </insert>
+
+    <select id="getGroupByUserId" resultMap="UserGroupMap">
+        select id, group_name, path from user_rel
+        where user_id = #{userId} limit 1
+    </select>
+    
+    <select id="getOrgByRootGroupId" resultMap="UserOrganization">
+        select id, org_name from  organization
+        where group_id = #{groupId} limit 1
+    </select>
+
+
 </mapper>

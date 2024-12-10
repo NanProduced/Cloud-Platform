@@ -1,6 +1,5 @@
 package tech.nan.demo.gateway.filter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -44,12 +43,14 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
     private String analysisUserInfo(Jwt jwt) {
         ObjectMapper objectMapper = JsonUtils.getObjectMapper();
         ObjectNode jsonNode = objectMapper.createObjectNode();
-        jsonNode.put("username", jwt.getClaimAsBoolean("user_name"));
+        jsonNode.put("username", jwt.getClaimAsString("user_name"));
         jsonNode.put("userId", (long) jwt.getClaim("user_id"));
-        List<String> authorities = jwt.getClaimAsStringList("authorities");
-        jsonNode.set("authorities", objectMapper.valueToTree(authorities));
         List<String>  userRoles = jwt.getClaimAsStringList("user_roles");
         jsonNode.set("userRoles", objectMapper.valueToTree(userRoles));
+        jsonNode.put("groupId", (long) jwt.getClaim("group_id"));
+        jsonNode.put("groupName", jwt.getClaimAsString("group_name"));
+        jsonNode.put("orgId", (long) jwt.getClaim("org_id"));
+        jsonNode.put("orgName", jwt.getClaimAsString("org_name"));
         return Base64Utils.encodeToString(jsonNode.toString().getBytes(StandardCharsets.UTF_8));
     }
 

@@ -7,17 +7,28 @@ import org.springframework.stereotype.Repository;
 import tech.nan.demo.converter.CommonConverter;
 import tech.nan.demo.domain.group.Group;
 import tech.nan.demo.mysql.DO.GroupDO;
+import tech.nan.demo.mysql.DO.TerminalRelDO;
+import tech.nan.demo.mysql.DO.UserRelDO;
 import tech.nan.demo.mysql.mapper.GroupMapper;
+import tech.nan.demo.mysql.mapper.TerminalRelMapper;
+import tech.nan.demo.mysql.mapper.UserRelMapper;
 import tech.nan.demo.repository.GroupRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class GroupRepositoryImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupRepository {
 
     @Autowired
     private CommonConverter converter;
+
+    @Autowired
+    private UserRelMapper userRelMapper;
+
+    @Autowired
+    private TerminalRelMapper terminalRelMapper;
 
     private final String PATH_FAN = "|";
 
@@ -68,6 +79,26 @@ public class GroupRepositoryImpl extends ServiceImpl<GroupMapper, GroupDO> imple
                 .list();
         result.addAll(converter.convert2Groups(subGroups));
         return result;
+    }
+
+    @Override
+    public Group getGroupByUserId(Long userId) {
+        UserRelDO userRelDO = userRelMapper.selectOne(new LambdaQueryWrapper<>(UserRelDO.class)
+                .eq(UserRelDO::getUserId, userId));
+        if (Objects.nonNull(userRelDO)) {
+            return this.getGroupById(userRelDO.getGroupId());
+        }
+        return null;
+    }
+
+    @Override
+    public Group getGroupByTerminalId(Long terminalId) {
+        TerminalRelDO terminalRelDO = terminalRelMapper.selectOne(new LambdaQueryWrapper<>(TerminalRelDO.class)
+                .eq(TerminalRelDO::getGroupId, terminalId));
+        if (Objects.nonNull(terminalRelDO)) {
+            return this.getGroupById(terminalRelDO.getGroupId());
+        }
+        return null;
     }
 }
 

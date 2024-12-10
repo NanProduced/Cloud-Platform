@@ -16,4 +16,10 @@ public class RequestUserInfo {
     private List<String> userRoles;
 
     private Long groupId;
+
+    private String groupName;
+
+    private Long orgId;
+
+    private String orgName;
 }

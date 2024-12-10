@@ -15,5 +15,9 @@ public interface GroupRepository {
     String getGroupPath(Long groupId);
 
     List<Group> getAllSubGroupById(Long groupId);
+
+    Group getGroupByUserId(Long userId);
+
+    Group getGroupByTerminalId(Long terminalId);
 }
 

@@ -2,7 +2,9 @@ package tech.nan.demo.application.permission;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tech.nan.demo.domain.group.Group;
 import tech.nan.demo.repository.GroupRepository;
+import tech.nan.demo.utils.InvocationContextHolder;
 
 import java.util.Objects;
 
@@ -20,9 +22,16 @@ public class GroupPermissionValidator {
      * @param targetGroupId
      * @return
      */
-    public boolean ifHasPermission(Long sourceGroupId, Long targetGroupId) {
+    public boolean ifHasPermissionAtGroup(Long sourceGroupId, Long targetGroupId) {
         String sourceGroupPath = Objects.requireNonNull(groupRepository.getGroupPath(sourceGroupId), "group " + sourceGroupId + "has no path");
         String targetGroupPath = Objects.requireNonNull(groupRepository.getGroupPath(targetGroupId), "group " + targetGroupId + "has no path");
         return  (sourceGroupPath.equals(targetGroupPath) || sourceGroupPath.startsWith(targetGroupPath + PATH_FAN));
+    }
+
+    public boolean ifHasPermissionAtUser(Long targetUserId) {
+        Long sourceGroupId = InvocationContextHolder.getContext().getRequestUser().getGroupId();
+        Group sourceGroup = groupRepository.getGroupById(sourceGroupId);
+        Group targetGroup = groupRepository.getGroupByUserId(targetUserId);
+        return (sourceGroup.getPath().equals(targetGroup.getPath()) || sourceGroup.getPath().startsWith(targetGroup.getPath() + PATH_FAN));
     }
 }

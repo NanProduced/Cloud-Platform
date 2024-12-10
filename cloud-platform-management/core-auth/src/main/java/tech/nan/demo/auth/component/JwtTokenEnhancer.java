@@ -16,7 +16,12 @@ public class JwtTokenEnhancer implements TokenEnhancer {
         UserPrincipal userPrincipal = (UserPrincipal) oAuth2Authentication.getPrincipal();
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user_id", userPrincipal.getUserId());
+        userInfo.put("user_name", userPrincipal.getUsername());
         userInfo.put("user_roles", userPrincipal.getRoles());
+        userInfo.put("group_id", userPrincipal.getGroupId());
+        userInfo.put("group_name", userPrincipal.getGroupName());
+        userInfo.put("org_id", userPrincipal.getOrgId());
+        userInfo.put("org_name", userPrincipal.getOrgName());
         ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(userInfo);
         return oAuth2AccessToken;
     }
