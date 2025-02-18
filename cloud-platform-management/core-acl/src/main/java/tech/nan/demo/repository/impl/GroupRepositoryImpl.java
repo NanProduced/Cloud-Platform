@@ -35,8 +35,9 @@ public class GroupRepositoryImpl extends ServiceImpl<GroupMapper, GroupDO> imple
     @Override
     public Group createOrgRootGroup(Group group) {
         GroupDO groupDO = converter.convert2GroupDO(group);
+        groupDO.setPath("|");
         this.save(groupDO);
-        groupDO.setPath("0|" + groupDO.getGroupId());
+        groupDO.setPath("" + groupDO.getGroupId());
         this.updateById(groupDO);
         return converter.convert2Group(groupDO);
     }

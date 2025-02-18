@@ -1,14 +1,9 @@
 package tech.nan.demo.auth.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import tech.nan.demo.auth.client.dto.UserDTO;
+import tech.nan.demo.auth.client.api.UserApi;
 
 @FeignClient(value = "auth-server", contextId = "user-service")
-public interface UserClient {
+public interface UserClient extends UserApi {
 
-    String PREFIX = "/auth/user";
-
-    @PostMapping(PREFIX + "/create")
-    Long createUser(UserDTO userDTO);
 }

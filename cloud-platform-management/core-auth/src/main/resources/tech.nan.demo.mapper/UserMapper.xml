@@ -19,8 +19,9 @@
     </insert>
 
     <select id="getGroupByUserId" resultMap="UserGroupMap">
-        select id, group_name, path from user_rel
-        where user_id = #{userId} limit 1
+        select `group_info`.id as id, `group_info`.group_name as group_name, `group_info`.path as path from `group_info`
+        left join user_rel on `group_info`.id = user_rel.group_id
+        where user_rel.user_id = #{userId} limit 1
     </select>
     
     <select id="getOrgByRootGroupId" resultMap="UserOrganization">

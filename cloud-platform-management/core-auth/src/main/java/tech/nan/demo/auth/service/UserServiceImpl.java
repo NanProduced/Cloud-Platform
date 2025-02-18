@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserDetailsService, Serializable {
             user.setGroupId(group.getGroupId());
             user.setGroupName(group.getGroupName());
             String[] split = group.getPath().split("\\|");
-            Long orgRootGroupId = Long.parseLong(split[1]);
+            Long orgRootGroupId = Long.parseLong(split[0]);
             OrgDO org = userMapper.getOrgByRootGroupId(orgRootGroupId);
             if (Objects.nonNull(org)) {
                 user.setOrgId(org.getOrgId());

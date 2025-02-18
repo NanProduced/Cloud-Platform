@@ -18,7 +18,10 @@ public enum ExceptionEnum {
     JSON_DESERIALIZATION_EXCEPTION(1009, "JsonUtil deserialization failed"),
     PERMISSION_DENIED(1010, "Permission denied"),
     PARAM_PARAMETER_EXCEPTION(1011, "param is invalid"),
-    OPERATION_NOT_SUPPORTED(1012, "operation not supported");
+    OPERATION_NOT_SUPPORTED(1012, "operation not supported"),
+
+    /* 参数校验 -> 4xxx */
+    USER_NAME_DUPLICATION_EXCEPTION(4001, "Username is duplication");
 
     private final Integer code;
     private final String message;

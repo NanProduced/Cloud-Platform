@@ -1,6 +1,7 @@
 package tech.nan.demo.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.nan.demo.application.model.DTO.CreateOrgRequest;
 import tech.nan.demo.application.model.DTO.CreateOrgResponse;
@@ -8,6 +9,7 @@ import tech.nan.demo.auth.client.UserClient;
 import tech.nan.demo.auth.client.dto.UserDTO;
 import tech.nan.demo.domain.group.Group;
 import tech.nan.demo.domain.organization.Organization;
+import tech.nan.demo.exception.ExceptionEnum;
 import tech.nan.demo.repository.GroupRepository;
 import tech.nan.demo.repository.OrganizationRepository;
 import tech.nan.demo.utils.PasswordUtils;
@@ -15,6 +17,7 @@ import tech.nan.demo.utils.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class OrgService {
 
     @Autowired
@@ -32,7 +35,7 @@ public class OrgService {
         Group rootGroup = Group.builder()
                 .groupName(request.getOrgName())
                 .description("organization root group")
-                .parent(0L)
+                .parent(1L)
                 .creatorId(1L)
                 .type(0)
                 .createTime(LocalDateTime.now())
@@ -41,7 +44,7 @@ public class OrgService {
         Group orgRootGroup = groupRepository.createOrgRootGroup(rootGroup);
         String password = PasswordUtils.generatePassword(12);
         UserDTO orgManager = UserDTO.builder()
-                .groupId(rootGroup.getGroupId())
+                .groupId(orgRootGroup.getGroupId())
                 .username(request.getRootUserName())
                 .password(password)
                 .email(request.getMail())
@@ -53,6 +56,7 @@ public class OrgService {
                 .updateTime(LocalDateTime.now())
                 .build();
         Long userId = userClient.createUser(orgManager);
+        ExceptionEnum.USER_NAME_DUPLICATION_EXCEPTION.throwIf(userId == null, "Username is duplication");
         Organization organization = Organization.builder()
                 .groupId(orgRootGroup.getGroupId())
                 .managerId(userId)
